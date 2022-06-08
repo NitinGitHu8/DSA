@@ -1,0 +1,76 @@
+package graphs;
+import java.util.ArrayList;
+import java.util.Arrays;
+
+public class Graph {
+	ArrayList<ArrayList<Integer>>a=new ArrayList<ArrayList<Integer>>();
+	int time=0;
+	static private int V;
+	 static final int NIL=-1;
+	
+	Graph(int v){
+		V=v;
+		for(int i=0;i<v;i++) {
+			a.add(new ArrayList<Integer>());		}
+	}
+	void addEdge(int u,int v) {
+		a.get(u).add(v);
+		a.get(v).add(u);
+		
+	}
+	void AP(int s,boolean visited[],int disc[],int low[],int parent[],boolean ap[]) {
+		int children=0;
+		visited[s]=true;
+		disc[s]=low[s]=++time;
+		for(int v:a.get(s)) {
+			if(visited[v]==false) {
+				parent[v]=s;
+				AP(v,visited,disc,low,parent,ap);
+				low[s]=Math.min(low[s], low[v]);
+				if(parent[s]==NIL&&children>0) {
+					ap[s]=true;
+				}
+				if(parent[s]!=NIL&&low[v]>=low[s]) {
+					ap[s]=true;
+				}
+			}
+			else {
+				low[s]=disc[v];
+				
+			}
+			
+		}
+		
+	}
+	public static void main(String args[]) {
+		
+		
+		
+		
+		Graph g=new Graph(5);
+boolean visited[]=new boolean[V];
+		
+		int disc[]=new int[V];
+		int low[]=new int[V];
+		boolean ap[]=new boolean[V];
+		int parent[]=new int[V];
+		Arrays.fill(parent, NIL);
+		g.addEdge(0,2);
+		g.addEdge(2,1);
+		g.addEdge(1,0);
+		g.addEdge(2,3);
+		g.addEdge(3,4);
+		for(int i=0;i<V;i++) {
+			if(visited[i]==false) {
+				g.AP(i,visited,disc,low,parent,ap);
+			}
+		}
+		for(int i=0;i<V;i++) {
+			if(ap[i]==true) {
+				System.out.print(i+" ");
+			}
+		}
+		
+	}
+
+}
