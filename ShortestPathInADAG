@@ -1,0 +1,73 @@
+package graphs;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Stack;
+
+public class Graph {
+	static private int V;
+	int graph[][];
+	Graph(int v){
+		V=v;
+		graph=new int[V][V];
+	}
+	void addEdge(int u,int v,int w) {
+		graph[u][v]=w;
+	}
+	void topologicalSort(int s,boolean visited[],Stack<Integer>st) {
+		visited[s]=true;
+		for(int v=0;v<V;v++) {
+			if(graph[s][v]!=0&&visited[v]==false) {
+				topologicalSort(v,visited,st);
+			}
+		}
+		st.push(s);
+		
+	}
+	void shortestPathInDAG(int s,int dist[],boolean visited[]) {
+		Stack<Integer>st=new Stack<Integer>();
+		dist[s]=0;
+		for(int i=0;i<V;i++) {
+			if(visited[i]==false) {
+			topologicalSort(i,visited,st);
+			}
+		}
+		ArrayList<Integer>a=new ArrayList<Integer>();
+		while(st.isEmpty()==false) {
+			a.add(st.pop());
+		}
+		System.out.print(a);
+		Arrays.fill(visited, false);
+		while(a.isEmpty()==false) {
+		int S=a.remove(0);
+		System.out.print(a);
+		for(int v=0;v<V;v++) {
+			if(graph[S][v]!=0) {
+				dist[v]=Math.min(dist[v], dist[S]+graph[S][v]);
+				
+				
+			}
+		}
+		}
+		for(int i=0;i<dist.length;i++) {
+			System.out.print(dist[i]+" ");
+		}
+	}
+	public static void main(String args[]) {
+		Graph g=new Graph(4);
+		g.addEdge(0,1,1);
+		g.addEdge(1,2,3);
+		g.addEdge(1,3,4);
+		g.addEdge(2,3,2);
+		
+		boolean visited[]=new boolean[V];
+		int dist[]=new int[V];
+		Arrays.fill(dist, Integer.MAX_VALUE);
+		g.shortestPathInDAG(1,dist,visited);
+		
+	}
+	
+	
+	
+		
+		
+	}
