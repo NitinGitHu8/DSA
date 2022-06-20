@@ -1,0 +1,88 @@
+package graphs;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Stack;
+import java.util.Queue;
+import java.util.LinkedList;
+
+public class Graph {
+	static private int V;
+	ArrayList<ArrayList<Integer>>a=new ArrayList<ArrayList<Integer>>();
+	int time;
+	Graph(int v){
+		V=v;
+		for(int i=0;i<V;i++) {
+			a.add(new ArrayList<Integer>());
+	}
+	
+	}
+	void addEdge(int u,int v) {
+		a.get(u).add(v);
+		//a.get(v).add(u);
+	}
+	void Tarjans(int s,boolean visited[],int disc[],int low[],int parent[],Stack<Integer>st) {
+		visited[s]=true;
+		disc[s]=low[s]=++time;
+		st.push(s);
+		for(int v:a.get(s)) {
+			if(visited[v]=false) {
+				parent[v]=s;
+				Tarjans(v,visited,disc,low,parent,st);
+				low[s]=Math.min(low[s], low[v]);
+				}
+			else
+			{
+				low[s]=Math.min(low[s], disc[v]);
+			}
+		}
+		/*if(low[s]==disc[s]) {
+		while(st.isEmpty()==false&&st.peek()!=s) {
+			System.out.print(st.pop()+" ");
+			
+		}
+		System.out.print(st.pop()+" " );
+		}*/
+		int w = -1; 
+		if (low[s] == disc[s]) 
+		{ 
+			while (w != s) 
+			{ 
+				w = (int)st.pop(); 
+				System.out.print(w + " "); 
+				//stackMember[w] = false; 
+			} 
+			System.out.println(); 
+		} 
+	}
+	
+	
+	
+	public static void main(String args[]) {
+		Graph g=new Graph(5);
+		g.addEdge(0,1);
+		g.addEdge(1,2);
+		g.addEdge(0,2);
+		g.addEdge(2, 3);
+		g.addEdge(3,4);
+		g.addEdge(2, 4);
+		boolean visited[]=new boolean[V];
+		int parent[]=new int[V];
+		int disc[]=new int[V];
+		int low[]=new int[V];
+		Stack<Integer>st=new Stack<Integer>();
+		for(int i=0;i<V;i++) {
+			if(visited[i]==false) {
+			g.Tarjans(i,visited,disc,low,parent,st);
+			}
+		}
+		
+		
+		
+	}
+	
+	
+	
+		
+		
+	}
+	
