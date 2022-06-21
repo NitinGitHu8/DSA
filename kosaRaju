@@ -1,0 +1,107 @@
+package graphs;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Stack;
+import java.util.Queue;
+import java.util.LinkedList;
+
+public class Graph {
+	private static int V;
+	int graph[][];
+	int rev[][];
+	Graph(int n){
+		V=n;
+		graph=new int[V][V];
+		rev=new int[V][V];
+	}
+	void addEdge(int u,int v) {
+		graph[u][v]=1;
+	}
+	void reverseEdge() {
+		for(int i=0;i<V;i++) {
+			for(int j=0;j<V;j++) {
+				System.out.print(graph[i][j]+" ");
+			}
+			System.out.println();
+		}
+		
+		for(int i=0;i<V;i++) {
+			for(int j=0;j<V;j++) {
+				if(graph[i][j]==1) {
+					rev[j][i]=1;
+				}
+				
+			}
+		}
+		for(int i=0;i<V;i++) {
+			for(int j=0;j<V;j++) {
+				System.out.print(rev[i][j]+" ");
+			}
+			System.out.println();
+		}
+	}
+	void dfs(int s,boolean visited[]) {
+		visited[s]=true;
+		System.out.print(s+" ");
+		for(int v=0;v<V;v++) {
+			if(rev[s][v]!=0&&visited[v]==false) {
+				dfs(v,visited);
+				
+			}
+		}
+	}
+	void topologicalSort(int s,boolean visited[],Stack<Integer>st) {
+		visited[s]=true;
+		for(int v=0;v<V;v++) {
+			if(graph[s][v]!=0&&visited[v]==false) {
+				visited[v]=true;
+				topologicalSort(v,visited,st);
+			}
+		}
+		st.push(s);
+		
+		
+	}
+	void kosaRaju(boolean visited[],Stack<Integer>st) {
+		for(int i=0;i<V;i++) {
+			if(visited[i]==false) {
+			topologicalSort(i,visited,st);
+		}
+		}
+		
+		reverseEdge();
+		
+			Arrays.fill(visited, false);
+		while(st.isEmpty()==false) {
+			int popped=st.pop();
+			if(visited[popped]==false) {
+				dfs(popped,visited);
+				System.out.println();
+			}
+			
+			
+		
+		
+		
+		}
+		}
+	public static void main(String args[]) {
+		Graph g=new Graph(5);
+		g.addEdge(0, 1);
+		g.addEdge(1, 2);
+		g.addEdge(2, 0);
+		g.addEdge(3, 1);
+		g.addEdge(3, 4);
+		boolean visited[]=new boolean[V];
+		Stack<Integer>st=new Stack<Integer>();
+		g.kosaRaju(visited,st);
+		
+		
+		
+		
+	}
+	
+	
+		
+		
+	}
