@@ -1,0 +1,60 @@
+package graphs;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Stack;
+import java.util.Queue;
+import java.util.LinkedList;
+
+public class Graph {
+	private static int V;
+	ArrayList<ArrayList<Integer>>a=new ArrayList<ArrayList<Integer>>();
+	Graph(int n){
+		V=n;
+		for(int i=0;i<V;i++) {
+			a.add(new ArrayList<Integer>());
+		}
+	}
+	void addEdge(int u,int v) {
+		a.get(u).add(v);
+	}
+	boolean cycleDetection(int s,boolean visited[] ,int parent[]) {
+		visited[s]=true;
+		for(int v:a.get(s)) {
+			if(visited[v]==false) {
+				parent[v]=s;
+				return cycleDetection(v,visited,parent);
+			}
+			else if(parent[s]!=v) {
+				return true;
+			}
+		}
+		return false;
+	}
+	public static void main(String args[]) {
+		Graph g=new Graph(5);
+		g.addEdge(0, 1);
+		g.addEdge(0, 2);
+		//g.addEdge(2, 1);
+		g.addEdge(2, 3);
+		g.addEdge(3, 4);
+		//g.addEdge(4, 2);
+		boolean visited[]=new boolean[V];
+		int parent[]=new int[V];
+		for(int i=0;i<V;i++) {
+			if(visited[i]==false) {
+				if(g.cycleDetection(i,visited,parent)) {
+					System.out.println("cycleDetected");
+					break;
+				}
+			}
+		}
+		System.out.println("No cycle");
+	}
+	
+	
+	
+	
+		
+		
+	}
